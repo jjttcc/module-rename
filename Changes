@@ -1,5 +1,9 @@
 ######################################################################
 Revision history for Perl extension Module::Rename
 
+0.02  2005/03/28
+   (ms) Replace "Foo/Bar" in files just like "Foo::Bar".
+   (ms) Replace pm files outside the regular dir structure.
+
 0.01  2005/03/27
-      * Where it all began.
+   (ms) Where it all began.
