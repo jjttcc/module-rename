@@ -4,13 +4,18 @@
 ###########################################
 # PURPOSE
 ###########################################
+
+BEGIN {
+    use File::Basename;
+    push @INC, dirname($0) . '/../lib';
+}
+
 use strict;
 use warnings;
 use Pod::Usage;
-use Module::Rename;
+use Module::Rename2;
 use Log::Log4perl qw(:easy);
 use Getopt::Std;
-use File::Basename;
 
 getopts("vh", \my %o);
 
@@ -29,7 +34,7 @@ my($old, $new, $dir) = @ARGV;
 
 pod2usage "Missing arguments" unless defined $new;
 
-my $ren = Module::Rename->new(
+my $ren = Module::Rename2->new(
     name_old           => $old,
     name_new           => $new,
     wipe_empty_subdirs => 1,
