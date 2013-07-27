@@ -9,7 +9,7 @@ use Log::Log4perl qw(:easy);
 use File::Basename;
 use Data::Dumper;
 
-our $VERSION = "0.03";
+our $VERSION = "0.03.1";
 
 ###########################################
 sub new {

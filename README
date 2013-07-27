@@ -1,5 +1,5 @@
 ######################################################################
-    Module::Rename 0.03
+    Module::Rename 0.03.1
 ######################################################################
 
 NAME
@@ -10,6 +10,9 @@ SYNOPSIS
         # Shell:
         ########
         $ module-rename Old::Name New::Name Old-Name-Distro
+
+        # use 'git mv' instead of 'mv':
+        $ module-rename -g Old::Name New::Name Old-Name-Distro
 
         #######
         # Perl:
@@ -22,6 +25,21 @@ SYNOPSIS
         );
 
         $ren->find_and_rename($start_dir);
+
+NOTE
+    I (See AUTHOR section at bottom.) have made a small modification to this
+    package to allow the option of using 'git mv' instead of 'mv'. I sent a
+    request to the author via cpan to add my changes a few days ago. Since
+    I've not heard back I've decided to put this branch up on github - to
+    provide a safe back up and in case my changes are useful to anyone else
+    (unless/until the changes are incorporated into the official module).
+    Since this is not the official distribution some of the changes are hack-
+    ish - such as creating a new Rename2 module and changing @INC in the
+    module-rename script to use the module found based on the script's path
+    (so that the original version - e.g., in /usr/local/bin/module-rename -
+    can co-exist with this modified version). These changes would be cleaned
+    up, of course, if this version gets accepted into the official
+    distribution.
 
 DESCRIPTION
     Have you ever created a module distribution, only to realize later that
@@ -111,3 +129,4 @@ LEGALESE
 AUTHOR
     2005, Mike Schilli <cpan@perlmeister.com>
 
+    2013 - modifications by Jim Cochrane
