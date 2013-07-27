@@ -10,14 +10,16 @@ BEGIN {
     push @INC, dirname($0) . '/../lib';
 }
 
-use strict;
-use warnings;
+use Modern::Perl;
 use Pod::Usage;
 use Module::Rename2;
 use Log::Log4perl qw(:easy);
 use Getopt::Std;
+use Data::Dumper;
 
-getopts("vh", \my %o);
+my $o = {};
+getopts("vhg", $o);
+my $use_git = $o->{g};
 
 Log::Log4perl->easy_init({
   level  => $WARN,
@@ -28,7 +30,7 @@ my  $VERSION = "0.01";
 
 pod2usage({-message => basename($0) . " v$VERSION",
            -verbose => 2
-          }) if $o{h};
+          }) if $o->{h};
 
 my($old, $new, $dir) = @ARGV;
 
@@ -38,6 +40,7 @@ my $ren = Module::Rename2->new(
     name_old           => $old,
     name_new           => $new,
     wipe_empty_subdirs => 1,
+    use_git            => $use_git,
 );
 
 $ren->find_and_rename($dir || ".");
@@ -46,11 +49,14 @@ __END__
 
 =head1 NAME
 
-    module-rename - Rename Perl module distributions
+module-rename - Rename Perl module distributions
 
 =head1 SYNOPSIS
 
-    $ module-rename Old::Name New::Name Old-Name-Distro-Dir
+ module-rename [-g] Old::Name New::Name [Old-Name-Distro-Dir]
+ Options:
+    -g      use git-mv instead of mv
+    -h      show help message
 
 =head1 DESCRIPTION
 

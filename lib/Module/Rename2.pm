@@ -19,6 +19,7 @@ sub new {
     my $self = {
         name_old           => undef,
         name_new           => undef,
+        use_git            => 0,
         dir_exclude        => ['blib'],
         dir_ignore         => ['CVS'],
         wipe_empty_subdirs => 0,
@@ -41,12 +42,17 @@ sub new {
 }
 
 ###########################################
-# Execute 'git mv' on the specified old and new paths.
+# "move" $oldpath to $newpath - if $self->use_git, then do a 'git mv';
+# otherwise, execute a filesystem move (mv).
 ###########################################
-sub gitmv {
-    my ($oldpath, $newpath) = @_;
+sub move {
+    my ($self, $oldpath, $newpath) = @_;
     if ($oldpath ne $newpath) {
-        system("git mv $oldpath $newpath")
+        if ($self->{use_git}) {
+            system("git mv $oldpath $newpath")
+        } else {
+            mv $oldpath, $newpath;
+        }
     }
 }
 
@@ -86,10 +92,10 @@ sub find_and_rename {
             $newfile =~ s/$self->{pmfile}/$self->{new_pmfile}/;
         }
 
-        INFO "gitmv $file $newfile";
+        INFO "mv $file $newfile";
         my $dir = dirname($newfile);
         mkd $dir unless -d $dir;
-        gitmv $file, $newfile;
+        $self->move($file, $newfile);
     }
 
     (my $dashed_look_for   = $self->{name_old}) =~ s#::#-#g;
@@ -104,7 +110,7 @@ sub find_and_rename {
     }, $start_dir);
     for my $item (@rename_candidates) {
         (my $newitem = $item) =~ s/$dashed_look_for/$dashed_replace_by/;
-        gitmv $item, $newitem;
+        $self->move($item, $newitem);
     }
 
         # Even the start_dir could have to be modified.
