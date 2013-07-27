@@ -2,12 +2,12 @@
 package Module::Rename2;
 ###########################################
 
-use strict;
-use warnings;
+use Modern::Perl;
 use File::Find;
 use Sysadm::Install qw(:all);
 use Log::Log4perl qw(:easy);
 use File::Basename;
+use Data::Dumper;
 
 our $VERSION = "0.03";
 
@@ -42,7 +42,7 @@ sub new {
 }
 
 ###########################################
-# "move" $oldpath to $newpath - if $self->use_git, then do a 'git mv';
+# "move" $oldpath to $newpath - if $self->{use_git}, then do a 'git mv';
 # otherwise, execute a filesystem move (mv).
 ###########################################
 sub move {
